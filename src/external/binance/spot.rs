@@ -1,4 +1,5 @@
 use reqwest::Error;
+use serde::de::StdError;
 use serde::Deserialize;
 
 #[derive(Debug, Deserialize)]
@@ -27,8 +28,22 @@ pub struct ExchangeInfo {
     symbols: Vec<Symbol>,
 }
 
+#[tokio::test]
+async fn test_get_markets() {
+    // get_markets 함수 호출
+    match get_exchange_infos().await {
+        Ok(info) => {
+            // 필요한 테스트 조건을 추가하여 확인
+            assert!(!info.symbols.is_empty());
+        }
+        Err(e) => {
+            // 오류 발생 시 테스트 실패
+            panic!("Test failed: {:?}", e);
+        }
+    }
+}
 
-pub async fn getMarkets() -> Result<(ExchangeInfo), Error> {
+pub async fn get_exchange_infos() -> Result<(ExchangeInfo), Error> {
     let request_url = format!("https://api.binance.com/api/v3/exchangeInfo");
     println!("url: {}", request_url);
     let response = reqwest::get(&request_url).await?;

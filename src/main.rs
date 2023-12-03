@@ -7,7 +7,7 @@ use crate::external::binance::spot;
 #[tokio::main]
 async fn main() -> Result<(), Error> {
     // upbit::get_code().await?;
-    let binanceInfo = spot::getMarkets().await?;
+    spot::get_exchange_infos().await?;
     Ok(())
 }
 
